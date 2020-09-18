@@ -40,7 +40,7 @@ try:
         ["git", "diff", "--name-only", commit_range])
 except KeyError:
     print(
-        "🔥 This should be run on Travis. Otherwise make sure TRAVIS_BRANCH is set."
+        "This should be run on Travis. Otherwise make sure TRAVIS_BRANCH is set."
     )
     exit(1)
 
