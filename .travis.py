@@ -37,7 +37,7 @@ def validate(vocabulary):
 try:
     commit_range = os.environ["TRAVIS_COMMIT_RANGE"]
     changed_files = subprocess.check_output(
-        ["git", "diff", "--name-only", commit_range])
+        ["git", "diff", "--name-only", "master"])
 except KeyError:
     print(
         "This should be run on Travis. Otherwise make sure TRAVIS_BRANCH is set."
