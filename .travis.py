@@ -15,27 +15,33 @@ def validate(vocabulary):
 
     validator = Draft4Validator(schema)
 
-    _errors = sorted(validator.iter_errors(vocabulary), key=operator.attrgetter('path'))
+    _errors = sorted(
+        validator.iter_errors(vocabulary), key=operator.attrgetter('path'))
     error_messages = []
 
     # format errors to human-friendly strings
     for err in _errors:
         err_msg = []
-        err_msg.append("[%s] -> %s" % ("][".join(repr(index)
-                                                 for index in err.absolute_path), err.message))
-        for suberror in sorted(err.context, key=operator.attrgetter('schema_path')):
+        err_msg.append("[%s] -> %s" % ("][".join(
+            repr(index) for index in err.absolute_path), err.message))
+        for suberror in sorted(
+                err.context, key=operator.attrgetter('schema_path')):
             err_msg.append("  %s" % suberror.message)
 
         error_messages.append("\n".join(err_msg))
 
     return error_messages
 
+
 # Get a diff between master and current.
 try:
     commit_range = os.environ["TRAVIS_COMMIT_RANGE"]
-    changed_files = subprocess.check_output(["git", "diff", "--name-only", commit_range])
+    changed_files = subprocess.check_output(
+        ["git", "diff", "--name-only", commit_range])
 except KeyError:
-    print("🔥 This should be run on Travis. Otherwise make sure TRAVIS_BRANCH is set.")
+    print(
+        "🔥 This should be run on Travis. Otherwise make sure TRAVIS_BRANCH is set."
+    )
     exit(1)
 
 # Filter JSON files only.
@@ -70,7 +76,9 @@ for changed_file_json in changed_files_json:
             file_content = json.loads(unparsed_file_content)
     except json.decoder.JSONDecodeError:
         there_was_an_error = True
-        print(f"🔥 JSON could not be parsed. Follow this link to know more : https://jsonlint.com/?json={unparsed_file_content}")
+        print(
+            f"🔥 JSON could not be parsed. Follow this link to know more : https://jsonlint.com/?json={unparsed_file_content}"
+        )
 
     errors = validate(file_content)
     if errors:
