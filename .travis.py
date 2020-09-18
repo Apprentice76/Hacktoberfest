@@ -35,9 +35,10 @@ def validate(vocabulary):
 
 # Get a diff between master and current.
 try:
-    commit_range = os.environ["TRAVIS_COMMIT_RANGE"]
+    #commit_range = os.environ["TRAVIS_COMMIT_RANGE"]
+    commit_range = "master"
     changed_files = subprocess.check_output(
-        ["git", "diff", "--name-only", "master", "--"])
+        ["git", "diff", "--name-only", "commit_range"])
 except KeyError:
     print(
         "This should be run on Travis. Otherwise make sure TRAVIS_BRANCH is set."
